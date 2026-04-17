@@ -1,34 +1,32 @@
 # Stage 1: Build the Spring Boot application using Maven
-FROM eclipse-temurin:17-jdk-focal AS builder
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY mvnw .
-COPY .mvn .mvn
+# Copy pom.xml first
 COPY pom.xml .
 
+# Download dependencies (helps caching)
+RUN mvn dependency:go-offline
+
 # Copy source code
-COPY src src
+COPY src ./src
 
-# Make Maven wrapper executable
-RUN chmod +x mvnw
-
-# Build the JAR file
-RUN ./mvnw clean package -DskipTests
+# Build jar
+RUN mvn clean package -DskipTests
 
 # Stage 2: Lightweight runtime image
-FROM eclipse-temurin:17-jre-focal
+FROM eclipse-temurin:17-jre
 
-# Set working directory
 WORKDIR /app
 
-# Copy built JAR from builder stage
+# Copy generated jar
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose your application port
+# Expose port
 EXPOSE 8082
 
-# Run Spring Boot application
+# Run app
 ENTRYPOINT ["java", "-jar", "app.jar"]
+

@@ -21,8 +21,13 @@ public class CorsConfig  {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
+<<<<<<< HEAD
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
+=======
+                        .allowedOrigins("https://bookourshownow.netlify.app")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+>>>>>>> 289f7c17909343a66cf2793be941998ba9c5b0d1
                         .allowedHeaders("*");
             };
         };

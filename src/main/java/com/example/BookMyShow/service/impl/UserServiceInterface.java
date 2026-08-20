@@ -11,4 +11,5 @@ public interface UserServiceInterface {
     public User login(LoginRequest request);
     public List<User> getAllUser();
     public User getUserById(Long id);
+
 }

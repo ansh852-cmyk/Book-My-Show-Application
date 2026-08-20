@@ -23,6 +23,7 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody BookingRequest request)
     {
+
         return ResponseEntity.ok(bookingService.createBooking(request));
     }
 
